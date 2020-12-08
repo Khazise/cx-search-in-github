@@ -34,6 +34,10 @@ app.get('/users/:login',(req,res)=>{
                 table.create(user.data)
             })
         }
+        else
+        {
+            res.json(data)
+        }
     })
     /*axios('https://api.github.com/users/'+login).then((user) => { 
         res.json(user.data)
