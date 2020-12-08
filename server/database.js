@@ -1,29 +1,38 @@
 const fs = require('fs');
-
-module.exports = function(knex) {
+const Sequelize = require('sequelize');
+module.exports = function(sequelize) {
     const data = fs.readFileSync('../cx-search-in-github/user.json');
     const user = JSON.parse(data);
 
-    knex.schema.hasTable('user').then(function(exists) {
-        if (!exists) {
-            return knex.schema.createTable('user',function(t,insertData){
-                let check = new Object();
+    let check = new Object();
+    let userTable = new Object()             
+    let fieldsUser = Object.keys(user);
+    fieldsUser.forEach(field => {
+        if(field == 'id')
+        { 
+            //userTable.push(JSON.parse('{"result":true, "count":42}'))
+            try {
+                userTable['id'] = {"type": Sequelize.INTEGER, "autoIncrement": false, "primaryKey": true, "allowNull" : false}
+                check[field] = true
+            } catch (error) {
                 
-                let fieldsUser = Object.keys(user);
-                fieldsUser.forEach(field => {
-                    if(field == 'id')
-                    { 
-                        t.bigInteger('id').primary()
-                        check[field] = true
-                    }
-                    if(check[field] == null || check[field] == false)
-                    {
-                        check[field] = true;
-                        t.string(field, 500)
-                    }
-                })        
-            });
+            }
+            
         }
-    });
+        if(check[field] == null || check[field] == false)
+        {
+            try {
+                check[field] = true;
+                userTable[field] = {"type": Sequelize.STRING(255) }
+            } catch (error) {
+                
+            }
+            
+        }
+    }) 
+    
+    const table = sequelize.define('user',userTable )
+    sequelize.sync()
+    return table
 };
 
