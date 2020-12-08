@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Sequelize = require('sequelize');
 module.exports = function(sequelize) {
-    const data = fs.readFileSync('../cx-search-in-github/user.json');
+    const data = fs.readFileSync('../cx-search-in-github/server/user.json');
     const user = JSON.parse(data);
 
     let check = new Object();
