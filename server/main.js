@@ -11,20 +11,12 @@ const sequelize = new Sequelize('searchGithub', 'postgres', 'password', {
     host: 'localhost',
     dialect: 'postgres'
   });
-/*
-  try {
-    sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
- exit(0)
- */
+
 const table = db(sequelize)
 
 
-app.get('/users/:login',(req,res)=>{
-    let {login}=req.params
+app.get('/users',(req,res)=>{
+    let {login}=req.query
     table.findOne({ where: {login: login} }).then(data => {
         console.log(data)
         if(data == null)
@@ -39,21 +31,9 @@ app.get('/users/:login',(req,res)=>{
             res.json(data)
         }
     })
-    /*axios('https://api.github.com/users/'+login).then((user) => { 
-        res.json(user.data)
-    })*/
 })
+
 
 app.listen(port, () => {
     console.log(`Server listening at port ${port}`)
   })
-
-/*
-axios('https://api.github.com/users/Khazise').then((response) => {      
-    fs.writeFileSync('user.json', JSON.stringify(response.data));   
-    //console.log(response.data)              
-}, (error) => {                                                 
-    console.log("Error: ", error);                          
-});
-
-*/

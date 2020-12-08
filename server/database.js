@@ -10,14 +10,12 @@ module.exports = function(sequelize) {
     fieldsUser.forEach(field => {
         if(field == 'id')
         { 
-            //userTable.push(JSON.parse('{"result":true, "count":42}'))
             try {
                 userTable['id'] = {"type": Sequelize.INTEGER, "autoIncrement": false, "primaryKey": true, "allowNull" : false}
                 check[field] = true
             } catch (error) {
                 
-            }
-            
+            }  
         }
         if(check[field] == null || check[field] == false)
         {
